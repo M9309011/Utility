@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using TOHU.Toolbox.Utility.AOP_UT;
 
-namespace TOHU.Toolbox.Utility.AOP_UT.TestStep
+namespace TOHU.Toolbox.Utility.AOP_UT.TestStpe
 {
     [Binding]
     internal sealed class InterceptProcess
