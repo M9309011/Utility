@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="99e4de78-e468-46f9-8bc9-245d2adf7e2b" revisionNumber="1">
+	<developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+		<introduction>
+			<para>說明函式演進歷程。</para>
+		</introduction>
+		<section>
+			<title>版本 1.0.0 歷程</title>
+			<content>
+				<list class="bullet">
+					<listItem>
+						<para><link xlink:href="b3a3e0a5-b81d-4b30-811f-2dc22f9dee0b" /></para>
+					</listItem>
+				</list>
+			</content>
+		</section>
+
+		<relatedTopics>
+			<link xlink:href="e59697fd-6b12-475f-a96e-63f74df07e9d" />
+		</relatedTopics>
+
+	</developerConceptualDocument>
+</topic>

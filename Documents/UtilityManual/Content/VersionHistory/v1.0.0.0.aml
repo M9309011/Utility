@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<topic id="b3a3e0a5-b81d-4b30-811f-2dc22f9dee0b" revisionNumber="1">
+  <developerConceptualDocument xmlns="http://ddue.schemas.microsoft.com/authoring/2003/5" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <introduction>
+      <para>
+        版本 1.0.0.0 發佈於 2017/01 
+      </para>
+    </introduction>
+
+    <section>
+      <title>更新細節</title>
+      <content>
+
+        <list class="bullet">
+          <listItem>
+            <para>
+              提供 <link xlink:href="40428e9d-d670-41d0-a63d-3be08e2fddb4" /> 功能
+            </para>
+          </listItem>
+        </list>
+
+      </content>
+    </section>
+
+    <relatedTopics>
+      <link xlink:href="99e4de78-e468-46f9-8bc9-245d2adf7e2b" />
+    </relatedTopics>
+
+  </developerConceptualDocument>
+</topic>
