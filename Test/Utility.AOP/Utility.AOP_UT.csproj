@@ -58,7 +58,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InterceptProcess.feature</DependentUpon>
     </Compile>
-    <Compile Include="TestStpe\InterceptProcess.cs" />
+    <Compile Include="TestStep\InterceptProcess.cs" />
     <Compile Include="_Source\CallStacks.cs" />
     <Compile Include="_Source\ContextTarget.cs" />
     <Compile Include="_Source\PostProcessor.cs" />
