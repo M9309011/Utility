@@ -47,7 +47,9 @@
     <Compile Include="_Source\PreProcessAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utility\Utility.csproj">
       <Project>{a802fe8d-da7d-4cca-806d-fc74ba45d02d}</Project>
