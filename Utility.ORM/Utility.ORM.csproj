@@ -7,8 +7,8 @@
     <ProjectGuid>{28B9188E-CF83-4F52-910A-8F584BDC4503}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Utility.ORM</RootNamespace>
-    <AssemblyName>Utility.ORM</AssemblyName>
+    <RootNamespace>TOHU.Toolbox.Utility.ORM</RootNamespace>
+    <AssemblyName>TOHU.Toolbox.Utility.ORM</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -16,10 +16,11 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\_Libary\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\_Libary\TOHU.Toolbox.Utility.ORM.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,9 +42,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Source\BracketsOperator.cs" />
+    <Compile Include="_Source\ConditionOperatorEnum.cs" />
+    <Compile Include="_Source\LogicOperator.cs" />
+    <Compile Include="_Source\MapperFieldFinder.cs" />
+    <Compile Include="_Source\RelationObjectCenter.cs" />
+    <Compile Include="_Source\RelationObjectParameters.cs" />
+    <Compile Include="_Source\TableMapper.cs" />
+    <Compile Include="_Source\UpdateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_Source\" />
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{a802fe8d-da7d-4cca-806d-fc74ba45d02d}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -44,9 +44,15 @@
     <Compile Include="_Source\AOP\IPreProcessor.cs" />
     <Compile Include="_Source\AOP\IPostProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Source\ORM\IConditionOperator.cs" />
+    <Compile Include="_Source\ORM\IObjectMapper.cs" />
+    <Compile Include="_Source\ORM\IRelationObject.cs" />
+    <Compile Include="_Source\ORM\ISourceAgent.cs" />
+    <Compile Include="_Source\ORM\MappingFieldAttribute.cs" />
+    <Compile Include="_Source\ORM\SkipInsertFieldAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="_Source\ORM\" />
+    <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
