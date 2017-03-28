@@ -46,10 +46,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="_Source\ORM\IConditionOperator.cs" />
     <Compile Include="_Source\ORM\IObjectMapper.cs" />
-    <Compile Include="_Source\ORM\IRelationObject.cs" />
     <Compile Include="_Source\ORM\ISourceAgent.cs" />
     <Compile Include="_Source\ORM\MappingFieldAttribute.cs" />
+    <Compile Include="_Source\ORM\PrimaryIndexAttribute.cs" />
     <Compile Include="_Source\ORM\SkipInsertFieldAttribute.cs" />
+    <Compile Include="_Source\ORM\TableNameAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
