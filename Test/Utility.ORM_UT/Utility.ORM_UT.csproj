@@ -30,6 +30,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +41,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Pickles_Generate>True</Pickles_Generate>
+    <Pickles_FeatureDirectory>$(MSBuildProjectDirectory)</Pickles_FeatureDirectory>
+    <Pickles_DocumentationFormat>dhtml</Pickles_DocumentationFormat>
+    <Pickles_OutputDirectory>$(MSBuildProjectDirectory)\..\Spec\Utility.ORM</Pickles_OutputDirectory>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -56,54 +64,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestCase\ConditionBuilding.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConditionBuilding.feature</DependentUpon>
-    </Compile>
-    <Compile Include="TestCase\ParameterCollection.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParameterCollection.feature</DependentUpon>
-    </Compile>
-    <Compile Include="TestCase\RelationObjectOperator.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RelationObjectOperator.feature</DependentUpon>
-    </Compile>
-    <Compile Include="TestCase\UpdateBuilding.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>UpdateBuilding.feature</DependentUpon>
-    </Compile>
-    <Compile Include="TestStep\ConditionBuilding.cs" />
-    <Compile Include="TestStep\ParameterCollection.cs" />
-    <Compile Include="TestStep\RelationObjectOerator.cs" />
-    <Compile Include="TestStep\UpdateBuilding.cs" />
-    <Compile Include="_Source\CustomObject.cs" />
-    <Compile Include="_Source\MockSourceAgent.cs" />
-    <Compile Include="_Source\StubCondition.cs" />
-    <Compile Include="_Source\StubUpdateInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="TestCase\ConditionBuilding.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ConditionBuilding.feature.cs</LastGenOutput>
-    </None>
-    <None Include="TestCase\ParameterCollection.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ParameterCollection.feature.cs</LastGenOutput>
-    </None>
-    <None Include="TestCase\RelationObjectOperator.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>RelationObjectOperator.feature.cs</LastGenOutput>
-    </None>
-    <None Include="TestCase\UpdateBuilding.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>UpdateBuilding.feature.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Utility.ORM\Utility.ORM.csproj">
@@ -115,7 +79,6 @@
       <Name>Utility</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
@@ -123,5 +86,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\MSTest.TestAdapter.1.1.4-preview\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\MSTest.TestAdapter.1.1.4-preview\build\net45\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\..\packages\Pickles.MSBuild.2.15.0\build\Pickles.MSBuild.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Pickles.MSBuild.2.15.0\build\Pickles.MSBuild.targets'))" />
   </Target>
+  <Import Project="..\..\packages\Pickles.MSBuild.2.15.0\build\Pickles.MSBuild.targets" Condition="Exists('..\..\packages\Pickles.MSBuild.2.15.0\build\Pickles.MSBuild.targets')" />
 </Project>

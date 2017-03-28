@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Source\AccessAgent.cs" />
     <Compile Include="_Source\BracketsOperator.cs" />
     <Compile Include="_Source\ConditionOperatorEnum.cs" />
     <Compile Include="_Source\LogicOperator.cs" />
     <Compile Include="_Source\MapperFieldFinder.cs" />
+    <Compile Include="_Source\ObjectFactory.cs" />
     <Compile Include="_Source\RelationObjectCenter.cs" />
     <Compile Include="_Source\RelationObjectParameters.cs" />
     <Compile Include="_Source\TableMapper.cs" />

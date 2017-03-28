@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TOHU.Toolbox.Utility.ORM
 {
     /// <summary>
-    /// 提供條件式中的邏輯判斷。
+    /// 提供條件式中的邏輯判斷字串及參數功能。
     /// </summary>
     /// <remarks>
     /// <list type="bullet">
@@ -23,7 +19,7 @@ namespace TOHU.Toolbox.Utility.ORM
         private int l_nBracketsID = 0;
         private int m_nID = 0;
         private string m_sCondition = string.Empty;
-        private System.Reflection.PropertyInfo m_objCondition = null;
+        private PropertyInfo m_objCondition = null;
         private object l_objValue = null;
 
         private LogicOperator l_objParent = default(LogicOperator);
@@ -69,7 +65,7 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </item>
         /// </list>
         /// </remarks>
-        public LogicOperator(System.Reflection.PropertyInfo pi_objCondition) : this(0, pi_objCondition, null) { }
+        public LogicOperator(PropertyInfo pi_objCondition) : this(0, pi_objCondition, null) { }
 
         /// <summary>
         /// 建構元。
@@ -88,7 +84,18 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </item>
         /// </list>
         /// </remarks>
-        public LogicOperator(System.Reflection.PropertyInfo pi_objCondition, object pi_objSource) : this(0, pi_objCondition.Name, pi_objCondition.GetValue(pi_objSource), null) { }
+        public LogicOperator(PropertyInfo pi_objCondition, object pi_objSource)
+        {
+            string sCondition = pi_objCondition.Name;
+            string sMappingField = new MapperFieldFinder().Find(pi_objCondition);
+
+            if (sMappingField != string.Empty)
+            {
+                sCondition = sMappingField;
+            }
+
+            this.Initial(0, sCondition, pi_objCondition.GetValue(pi_objSource), null);
+        }
 
         /// <summary>
         /// 建構元。( 提供內部 And/Or 函式及其他建構元呼叫 )
@@ -97,12 +104,21 @@ namespace TOHU.Toolbox.Utility.ORM
         /// <param name="pi_sCondition">條件欄位。</param>
         /// <param name="pi_objValue">條件值。</param>
         /// <param name="pi_objParent">母項。</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         private LogicOperator(int pi_nId, string pi_sCondition, object pi_objValue, LogicOperator pi_objParent)
         {
-            this.m_nID = pi_nId + 1;
-            this.l_objParent = pi_objParent;
-            this.m_sCondition = pi_sCondition;
-            this.l_objValue = pi_objValue;
+            this.Initial(pi_nId, pi_sCondition, pi_objValue, pi_objParent);
         }
 
         /// <summary>
@@ -111,11 +127,31 @@ namespace TOHU.Toolbox.Utility.ORM
         /// <param name="pi_nId">條件序號。</param>
         /// <param name="pi_objCondition">條件屬性。</param>
         /// <param name="pi_objParent">母項。</param>
-        private LogicOperator(int pi_nId, System.Reflection.PropertyInfo pi_objCondition, LogicOperator pi_objParent)
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        private LogicOperator(int pi_nId, PropertyInfo pi_objCondition, LogicOperator pi_objParent)
         {
+            string sCondition = pi_objCondition.Name;
+            string sMappingField = new MapperFieldFinder().Find(pi_objCondition);
+
+            if (sMappingField != string.Empty)
+            {
+                sCondition = sMappingField;
+            }
+
             this.m_nID = pi_nId + 1;
             this.l_objParent = pi_objParent;
-            this.m_sCondition = pi_objCondition.Name;
+            this.m_sCondition = sCondition;
             this.m_objCondition = pi_objCondition;
         }
 
@@ -128,6 +164,18 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </summary>
         /// <param name="pi_objCondition"></param>
         /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator And(PropertyInfo pi_objCondition)
         {
             this.l_objConditionOperator = ConditionOperatorEnum.AND;
@@ -141,17 +189,41 @@ namespace TOHU.Toolbox.Utility.ORM
         /// <param name="pi_objCondition"></param>
         /// <param name="pi_objSource"></param>
         /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator And(PropertyInfo pi_objCondition, object pi_objSource)
         {
             return this.And(pi_objCondition.Name, pi_objCondition.GetValue(pi_objSource));
         }
 
         /// <summary>
-        /// 
+        /// 提供以 And 串聯條件。
         /// </summary>
-        /// <param name="pi_sCondition"></param>
-        /// <param name="pi_objValue"></param>
-        /// <returns></returns>
+        /// <param name="pi_sCondition">條件字串。</param>
+        /// <param name="pi_objValue">條件值。</param>
+        /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator And(string pi_sCondition, object pi_objValue)
         {
             this.l_objConditionOperator = ConditionOperatorEnum.AND;
@@ -164,6 +236,18 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </summary>
         /// <param name="pi_objCondition"></param>
         /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator Or(PropertyInfo pi_objCondition)
         {
             this.l_objConditionOperator = ConditionOperatorEnum.OR;
@@ -177,30 +261,67 @@ namespace TOHU.Toolbox.Utility.ORM
         /// <param name="pi_objCondition"></param>
         /// <param name="pi_objSource"></param>
         /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator Or(PropertyInfo pi_objCondition, object pi_objSource)
         {
             return this.Or(pi_objCondition.Name, pi_objCondition.GetValue(pi_objSource));
         }
 
         /// <summary>
-        /// 
+        /// 提供以 Or 串聯條件。
         /// </summary>
-        /// <param name="pi_sCondition"></param>
-        /// <param name="pi_objValue"></param>
-        /// <returns></returns>
+        /// <param name="pi_sCondition">條件字串。</param>
+        /// <param name="pi_objValue">條件值。</param>
+        /// <returns>次個條件。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         public LogicOperator Or(string pi_sCondition, object pi_objValue)
         {
             this.l_objConditionOperator = ConditionOperatorEnum.OR;
             this.l_objNextCondition = new LogicOperator(this.m_nID, pi_sCondition, pi_objValue, this);
             return this.l_objNextCondition;
         }
+
         #endregion
 
         #region -- 屬性 ( Properties ) --
 
         /// <summary>
-        /// 
+        /// 設定或取得括號編號。
         /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         internal int BracketsID
         {
             get { return this.l_nBracketsID; }
@@ -324,8 +445,51 @@ namespace TOHU.Toolbox.Utility.ORM
 
         #endregion
 
-        #region -- 區域函式 ( Internal Method ) --   
+        #region -- 區域函式 ( Internal Method ) --  
 
+        /// <summary>
+        /// 初始化物件。(提供建構元呼叫，統一建構元邏輯)
+        /// </summary>
+        /// <param name="pi_nId">條件序號。</param>
+        /// <param name="pi_sCondition">條件欄位。</param>
+        /// <param name="pi_objValue">條件值。</param>
+        /// <param name="pi_objParent">母項。</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
+        internal void Initial(int pi_nId, string pi_sCondition, object pi_objValue, LogicOperator pi_objParent)
+        {
+            this.m_nID = pi_nId + 1;
+            this.l_objParent = pi_objParent;
+            this.m_sCondition = pi_sCondition;
+            this.l_objValue = pi_objValue;
+        }
+
+        /// <summary>
+        /// 取得子項條件字串。
+        /// </summary>
+        /// <returns>條件字串。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         internal string GetConditionFromChild()
         {
             string sReturn = string.Empty;
@@ -344,6 +508,23 @@ namespace TOHU.Toolbox.Utility.ORM
             return sReturn;
         }
 
+        /// <summary>
+        /// 取得子項的條件參數集合。
+        /// </summary>
+        /// <param name="pi_objSource">預設來源物件。</param>
+        /// <returns>條件參數集合。</returns>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         internal Dictionary<string, object> GetConditionParameterFromChild(object pi_objSource)
         {
             Dictionary<string, object> objReturn = null;
@@ -372,16 +553,51 @@ namespace TOHU.Toolbox.Utility.ORM
             return objReturn;
         }
 
+        /// <summary>
+        /// 設定母項的括號序號。
+        /// </summary>
+        /// <param name="pi_nBracketsID">括號序號。</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         internal void SetParentBracketsID(int pi_nBracketsID)
         {
             this.l_nBracketsID = pi_nBracketsID;
             if (this.l_objParent != null) { this.l_objParent.SetParentBracketsID(pi_nBracketsID); }
         }
 
+        /// <summary>
+        /// 設定子項的括號序號。
+        /// </summary>
+        /// <param name="pi_nBracketsID">括號序號。</param>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><term>Author:</term><description>黃竣祥</description></item>
+        /// <item><term>Time:</term><description>[Time]</description></item>
+        /// <item><term>History</term><description>
+        /// <list type="number">
+        /// <item><term>[Time]</term><description>建立方法。</description></item>
+        /// </list>
+        /// </description>
+        /// </item>
+        /// </list>
+        /// </remarks>
         internal void SetChildBracketsID(int pi_nBracketsID)
         {
             this.l_nBracketsID = pi_nBracketsID;
-            if (this.l_objNextCondition != null) { this.l_objNextCondition.SetParentBracketsID(pi_nBracketsID); }
+            if (this.l_objNextCondition != null)
+            {
+                this.l_objNextCondition.SetChildBracketsID(pi_nBracketsID);
+            }
         }
 
         #endregion

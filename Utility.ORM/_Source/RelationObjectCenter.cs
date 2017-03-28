@@ -23,8 +23,7 @@ namespace TOHU.Toolbox.Utility.ORM
         /// <summary>
         /// 查詢關連資料物件。
         /// </summary>
-        /// <typeparam name="TRelationObject">關連資料物件型別。</typeparam>
-        /// <param name="pi_objConditionSource">條件式資料來源物件。</param>
+        /// <typeparam name="TRelationObject">關連資料物件型別。</typeparam>        
         /// <param name="pi_objParameters">執行關連資料物件操作的參數。</param>      
         /// <param name="pi_objSource">資料庫代理物件。</param>
         /// <returns>關連資料物件清單。</returns>
@@ -40,7 +39,7 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </item>
         /// </list>
         /// </remarks>
-        public List<TRelationObject> Query<TRelationObject>(object pi_objConditionSource, RelationObjectParameters pi_objParameters, ISourceAgent pi_objSource) where TRelationObject : new()
+        public List<TRelationObject> Query<TRelationObject>( RelationObjectParameters pi_objParameters, ISourceAgent pi_objSource) where TRelationObject : new()
         {
             List<TRelationObject> objReturn = new List<TRelationObject>();
             DataTable objTable = null;
@@ -51,7 +50,7 @@ namespace TOHU.Toolbox.Utility.ORM
                 string sCondition = pi_objParameters.Condition.GetConditionString();
                 sSQL = string.Format("{0} WHERE {1}", sSQL, sCondition);
 
-                objTable = pi_objSource.Query(sSQL, pi_objParameters.Condition.GetConditionParameter(pi_objConditionSource));
+                objTable = pi_objSource.Query(sSQL, pi_objParameters.Condition.GetConditionParameter(null));
             }
             else
             {
@@ -85,14 +84,20 @@ namespace TOHU.Toolbox.Utility.ORM
         {
             string sSQL = string.Empty;
             List<string> objColumns = new List<string>();
+            MapperFieldFinder objFinder = new MapperFieldFinder();
 
             foreach (PropertyInfo objProperty in typeof(TRelationObject).GetProperties())
             {
                 if (objProperty.GetCustomAttribute<SkipInsertFieldAttribute>(true) == null)
                 {
-                    objColumns.Add(objProperty.Name);
+                    string sFieldName = objFinder.Find(objProperty);
+
+                    sFieldName = sFieldName == string.Empty ? objProperty.Name : sFieldName;
+                    objColumns.Add(sFieldName);                
                 }
             }
+
+            objColumns.Sort();
 
             sSQL = string.Format("INSERT INTO [{2}] ( [{0}] ) VALUES ( @{1} )", string.Join("], [", objColumns), string.Join(", @", objColumns), pi_objParameters.TableName);
 
@@ -106,7 +111,10 @@ namespace TOHU.Toolbox.Utility.ORM
                 {
                     if (objProperty.GetCustomAttribute<SkipInsertFieldAttribute>(true) == null)
                     {
-                        objParameter.Add(string.Format("@{0}", objProperty.Name), objProperty.GetValue(objRelationObject));
+                        string sFieldName = objFinder.Find(objProperty);
+
+                        sFieldName = sFieldName == string.Empty ? objProperty.Name : sFieldName;
+                        objParameter.Add(string.Format("@{0}", sFieldName), objProperty.GetValue(objRelationObject));
                     }
                 }
                 objParameters.Add(objParameter);
@@ -174,7 +182,7 @@ namespace TOHU.Toolbox.Utility.ORM
         /// </remarks>
         public void Update<TRelationObject>(List<TRelationObject> pi_objRelationObjects, RelationObjectParameters pi_objParameters, ISourceAgent pi_objSource)
         {
-            string sSQL = string.Format("UPDATE [{0}] SET ( {1} )",
+            string sSQL = string.Format("UPDATE [{0}] SET {1}",
                 pi_objParameters.TableName,
                 pi_objParameters.UpdateInfo.GetString());
 
@@ -201,5 +209,6 @@ namespace TOHU.Toolbox.Utility.ORM
 
             pi_objSource.Execute(sSQL, objParameters);
         }
+
     }
 }
